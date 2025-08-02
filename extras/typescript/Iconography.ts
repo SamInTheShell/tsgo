@@ -1,8 +1,22 @@
 import {
     Heart, Brain, Eye, Zap, Dna, Sword, Shield, Feather, Orbit, BatteryFull,
     Castle, Crown, FlaskConical, Key, Lock, User, Users, Terminal, Cpu, Database, Wifi, Satellite, Bug, Ghost, Bot, Star, Moon, Sun, CloudLightning, Cloud, Book, Scroll, Gem, Hammer, Wrench, Axe, Map, Compass, Globe, Radar, Code, Server, Folder, FileText, MessageCircle, Bell, Music, Camera, Watch, Timer, Rocket, Lightbulb, Magnet, CircuitBoard,
-    ShieldCheck, ShieldOff, ShieldPlus, ShieldMinus, ShieldAlert, ShieldQuestion, EyeOff, ArrowLeft, LogOut, RefreshCcw, Ban,
-    MessageSquare, Newspaper, Dumbbell, Gavel, Stethoscope, TreePine, Building2, Landmark, BadgeCheck, HeartPulse, Flame, Beer, GlassWater, Wine, Gamepad2, PenTool, Sparkles, Store, Swords, Mountain
+    ShieldCheck, ShieldOff, ShieldPlus, ShieldMinus, ShieldAlert, ShieldQuestion, EyeOff, ArrowLeft, LogOut, RefreshCcw,
+    MessageSquare, Newspaper, Dumbbell, Gavel, Stethoscope, TreePine, Building2, Landmark, BadgeCheck, HeartPulse, Flame, Beer, GlassWater, Wine, Gamepad2, PenTool, Sparkles, Store, Swords, Mountain,
+    LogIn,
+    Backpack,
+    HardHat,
+    KeyRound,
+    AtSign,
+    UserPlus,
+    KeySquare,
+    BatteryCharging,
+    Trash2,
+    Trash,
+    Shredder,
+    Expand,
+    Hand,
+    Footprints
 } from 'lucide-react';
 import {
     DataObject as DataObjectIcon,
@@ -40,7 +54,10 @@ import {
     InsertDriveFile as InsertDriveFileIcon,
     Message as MessageIcon,
     Memory as MemoryIcon,
-    Error as ErrorIcon
+    Error as ErrorIcon,
+    SportsMma as SportsMmaIcon,
+    AutoFixNormal as AutoFixNormalIcon,
+    AutoFixHigh as AutoFixHighIcon
 } from '@mui/icons-material';
 import React from 'react';
 
@@ -109,6 +126,7 @@ export const iconComponents: Record<string, React.ElementType> = {
     EyeOff,
     BackOut: ArrowLeft,
     Exit: LogOut,
+    LogIn,
     Refresh: RefreshCcw,
     Broken: ErrorIcon,
     MessageSquare,
@@ -130,6 +148,20 @@ export const iconComponents: Record<string, React.ElementType> = {
     Sparkles,
     Store,
     Mountain,
+    Backpack,
+    HardHat,
+    KeyRound,
+    AtSign,
+    UserPlus,
+    KeySquare,
+    BatteryCharging,
+    Trash,
+    Trash2,
+    Shredder,
+    Expand,
+    Fist: Hand,
+    Footprints,
+    RotateCcw: RefreshCcw,
     // MUI icons with prefix
     'MUI/DataObject': DataObjectIcon,
     'MUI/Security': SecurityIcon,
@@ -166,6 +198,9 @@ export const iconComponents: Record<string, React.ElementType> = {
     'MUI/File': InsertDriveFileIcon,
     'MUI/Message': MessageIcon,
     'MUI/Circuit': MemoryIcon,
+    'MUI/Gloves': SportsMmaIcon,
+    'MUI/Wand1': AutoFixNormalIcon,
+    'MUI/Wand2': AutoFixHighIcon,
 };
 
 function getIconComponent(icon: string) {
@@ -261,14 +296,18 @@ export default function Iconography({ icon, color, size = 24, gradient }: Iconog
                 );
             }
             // Lucide icons: overlay gradient-masked icon on top of solid color version
+            const needsNudge = typeof size === 'number' && size <= 16;
+            const nudgeStyle = needsNudge ? { top: -2 } : {};
             return (
-                <span style={{ position: 'relative', display: 'inline-block', width: size, height: size }}>
-                    {/* Base icon with first gradient color */}
-                    <span style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-                        <IconComponent color={start.trim()} size={size} />
-                    </span>
+                <span style={{ position: 'relative', display: 'inline-block', width: size, height: size, verticalAlign: 'middle' }}>
+                    {/* Base icon as SVG for perfect alignment */}
+                    <svg width={size} height={size} style={{ position: 'absolute', left: 0, width: size, height: size, ...nudgeStyle }}>
+                        <g>
+                            <IconComponent color={start.trim()} size={size} style={{ width: '100%', height: '100%' }} />
+                        </g>
+                    </svg>
                     {/* Gradient-masked icon overlay */}
-                    <svg width={size} height={size} style={{ position: 'absolute', top: 0, left: 0, width: size, height: size, pointerEvents: 'none' }}>
+                    <svg width={size} height={size} style={{ position: 'absolute', left: 0, width: size, height: size, pointerEvents: 'none', ...nudgeStyle }}>
                         <defs>
                             <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%" stopColor={start.trim()} />
@@ -276,7 +315,7 @@ export default function Iconography({ icon, color, size = 24, gradient }: Iconog
                             </linearGradient>
                             <mask id={`${gradientId}-mask`}>
                                 <g>
-                                    <IconComponent color="#fff" size={size} />
+                                    <IconComponent color="#fff" size={size} style={{ width: '100%', height: '100%' }} />
                                 </g>
                             </mask>
                         </defs>
